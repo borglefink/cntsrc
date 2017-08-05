@@ -85,16 +85,16 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 	if !excluded {
 		var ext = filepath.Ext(filename)
 
-		var _, willBeCounted = res.Extensions[ext]
+		var entry, willBeCounted = res.Extensions[ext]
 		if !willBeCounted {
 			return nil
 		}
 
-		atomic.AddInt32(&(res.Extensions[ext].NumberOfFiles), 1)
+		atomic.AddInt32(&(entry.NumberOfFiles), 1)
 		atomic.AddInt32(&res.TotalNumberOfFiles, 1)
 
 		var size = f.Size()
-		atomic.AddInt64(&(res.Extensions[ext].Filesize), size)
+		atomic.AddInt64(&(entry.Filesize), size)
 		atomic.AddInt64(&res.TotalSize, size)
 
 		// Slurp the whole file into memory
@@ -113,8 +113,8 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		// will need to have the binary flag set for the report
 		if isBinary {
 			mutex.Lock()
-			if !res.Extensions[ext].IsBinary {
-				res.Extensions[ext].IsBinary = true
+			if !entry.IsBinary {
+				entry.IsBinary = true
 			}
 			mutex.Unlock()
 			return nil
@@ -123,7 +123,7 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		var newline = utils.DetermineNewline(contents)
 		var numberOfLines = int32(len(bytes.Split(contents, []byte(newline))))
 
-		atomic.AddInt32(&(res.Extensions[ext].NumberOfLines), numberOfLines)
+		atomic.AddInt32(&(entry.NumberOfLines), numberOfLines)
 		atomic.AddInt32(&res.TotalNumberOfLines, numberOfLines)
 
 		if res.NumberOfBigFiles > 0 {
