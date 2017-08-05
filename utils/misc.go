@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// isInString
-func isInString(stringToSearch string, stringsToSearchFor []string) bool {
+// IsInString returns true if the string is found in the target
+func IsInString(stringToSearch string, stringsToSearchFor []string) bool {
 	var isFound = false
 
 	for _, searchItem := range stringsToSearchFor {

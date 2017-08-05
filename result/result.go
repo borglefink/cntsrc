@@ -4,11 +4,29 @@
 
 package result
 
-// Result is metadata for the result
+// Result contains all data and totals for the count
 type Result struct {
 	Directory          string
 	Extensions         map[string]*ExtensionEntry
 	TotalNumberOfFiles int
 	TotalNumberOfLines int
 	TotalSize          int64
+	Exclusions         []string
+	BigFiles           []FileSize
+}
+
+// InitResult initialises the result
+func InitResult(extensions []string, exclusions []string) Result {
+	var r = Result{
+		Extensions: make(map[string]*ExtensionEntry),
+		Exclusions: exclusions,
+	}
+
+	for _, ext := range extensions {
+		r.Extensions[ext] = &ExtensionEntry{
+			ExtensionName: ext,
+		}
+	}
+
+	return r
 }

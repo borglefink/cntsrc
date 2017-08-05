@@ -10,21 +10,18 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/MichaelTJones/walk"
-
 	"countsrc/config"
+	"countsrc/find"
+	"countsrc/utils"
 )
 
 var (
-	startdir      = *flag.String("c", "", "countsource configuration file")
-	showDebug     = *flag.Bool("d", false, "show full status of which files and directories in path are excluded or included.")
-	showBigFiles  = *flag.Int("big", 0, "show the x largest files")
-	showHelp      = *flag.Bool("?", false, "this help information")
-	config        Config
-	countResult   Result
-	exclusions    Exclusions
-	pathSeparator = getPathSeparator()
-	bigFiles      = make(fileSizes, 0)
+	suggestedConfigFilename = *flag.String("c", "", "countsource configuration file")
+	showDebug               = *flag.Bool("d", false, "show full status of which files and directories in path are excluded or included.")
+	showBigFiles            = *flag.Int("big", 0, "show the x largest files")
+	showHelp                = *flag.Bool("?", false, "this help information")
+	startdir                = "."
+	cfg                     config.Config
 )
 
 // init
@@ -36,41 +33,29 @@ func init() {
 		usage()
 	}
 
-	if len(startdir) > 0 {
-		startdir = 
-	}
-
-	// Find given drirectory
-	startdir = getDirectory(flag.Arg(0), ".")
-
-	// Load config and prepare for parsing directory
-	var configFilename = getConfigFileName(*suggestedConfigFilename)
-	config = loadConfig(configFilename)
-	exclusions = config.getExclusions()
-	countResult = config.setupResult()
-	printAnalyticsHeader()
+	startdir = utils.ResolveStartdir(flag.Arg(0), ".")
+	cfg = config.LoadConfig(suggestedConfigFilename)
 }
 
 // usage
 func usage() {
 	var executableName = filepath.Base(os.Args[0])
-	fmt.Fprintf(os.Stderr, "\nCOUNTSOURCE (C) Copyright 2014-2017 Erlend Johannessen\n")
-	fmt.Fprintf(os.Stderr, "%s counts sourcecode lines for given directory and sub-directories.\n", executableName)
-	fmt.Fprintf(os.Stderr, "\nUsage: %s [dirname] [-c fullpathtoconfigfile] \n", executableName)
-	fmt.Fprintf(os.Stderr, "  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")
+	fmt.Printf("\nCOUNTSRC (C) Copyright 2017 Erlend Johannessen\n")
+	fmt.Printf("%s counts sourcecode lines for given directory and sub-directories.\n", executableName)
+	fmt.Printf("\nUsage: %s [dirname] [-c pathtoconfigfile] \n", executableName)
+	fmt.Printf("  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")
 	flag.PrintDefaults()
 	os.Exit(0)
 }
 
 // main
 func main() {
-	// Processing the given directory
-	var err = walk.Walk(startdir, forEachFileSystemEntry)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(-1)
-	}
+	var res = find.All(startdir, cfg)
+
+	fmt.Printf("%+v", res)
+
+	//printAnalyticsHeader(res)
 
 	// Show result
-	printResult()
+	//printResult(res)
 }

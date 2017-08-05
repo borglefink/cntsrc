@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"os"
 	"os/exec"
 	"testing"
@@ -12,44 +13,35 @@ const (
 
 // determineNewline tests
 func TestDetermineWindowsNewline(t *testing.T) {
-	var actualResult = determineNewline("Hello\r\n")
+	var actualResult = DetermineNewline([]byte("Hello\r\n"))
 	var expectedResult = windowsNewline
 
-	if actualResult != expectedResult {
+	if bytes.Compare(actualResult, expectedResult) != 0 {
 		t.Fatalf("Expected %s but got %s", expectedResult, actualResult)
 	}
 }
 
 func TestDetermineUnixNewline(t *testing.T) {
-	var actualResult = determineNewline("Hello\n")
+	var actualResult = DetermineNewline([]byte("Hello\n"))
 	var expectedResult = unixNewline
 
-	if actualResult != expectedResult {
-		t.Fatalf("Expected %s but got %s", expectedResult, actualResult)
-	}
-}
-
-func TestDetermineOldMacNewline(t *testing.T) {
-	var actualResult = determineNewline("Hello\r")
-	var expectedResult = oldMacNewline
-
-	if actualResult != expectedResult {
+	if bytes.Compare(actualResult, expectedResult) != 0 {
 		t.Fatalf("Expected %s but got %s", expectedResult, actualResult)
 	}
 }
 
 func TestDetermineDefaultWindowsNewline(t *testing.T) {
-	var actualResult = determineNewline("Hello")
+	var actualResult = DetermineNewline([]byte("Hello"))
 	var expectedResult = windowsNewline
 
-	if actualResult != expectedResult {
+	if bytes.Compare(actualResult, expectedResult) != 0 {
 		t.Fatalf("Expected %s but got %s", expectedResult, actualResult)
 	}
 }
 
 // isBinaryFormat tests
 func TestIsBinaryFormatFalse(t *testing.T) {
-	var actualResult = isBinaryFormat([]byte("<html><body><br/></body></html>"))
+	var actualResult = IsBinaryFormat([]byte("<html><body><br/></body></html>"))
 	var expectedResult = false
 
 	if actualResult != expectedResult {
@@ -58,7 +50,7 @@ func TestIsBinaryFormatFalse(t *testing.T) {
 }
 
 func TestIsBinaryFormatTrue(t *testing.T) {
-	var actualResult = isBinaryFormat([]byte("‰PNG IHDR  h     ‰"))
+	var actualResult = IsBinaryFormat([]byte("‰PNG IHDR  h     ‰"))
 	var expectedResult = true
 
 	if actualResult != expectedResult {

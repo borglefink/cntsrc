@@ -5,40 +5,38 @@
 package utils
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/kardianos/osext"
 )
 
-const (
-	windowsNewline       = "\r\n"
-	unixNewline          = "\n"
-	oldMacNewline        = "\r"
+var (
+	windowsNewline       = []byte("\r\n")
+	unixNewline          = []byte("\n")
 	unixPathSeparator    = "/"
 	windowsPathSeparator = "\\"
 )
 
-// determineNewline
-func determineNewline(stringWithNewline string) string {
-	if strings.Contains(stringWithNewline, windowsNewline) {
+// DetermineNewline determines which kind of newline format the given string contains
+func DetermineNewline(stringWithNewline []byte) []byte {
+	if bytes.Contains(stringWithNewline, windowsNewline) {
 		return windowsNewline
 	}
 
-	if strings.Contains(stringWithNewline, unixNewline) {
+	if bytes.Contains(stringWithNewline, unixNewline) {
 		return unixNewline
-	}
-
-	if strings.Contains(stringWithNewline, oldMacNewline) {
-		return oldMacNewline
 	}
 
 	return windowsNewline
 }
 
-// getDirectory
-func getDirectory(pathFromFlag, defaultPath string) string {
+// ResolveStartdir returns the relevant directory to be searched
+func ResolveStartdir(pathFromFlag, defaultPath string) string {
 	var err error
 
 	// First non-flag argument should be the starting directory
@@ -77,10 +75,21 @@ func getPathSeparator() string {
 	return unixPathSeparator
 }
 
-// isBinaryFormat
-func isBinaryFormat(data []byte) bool {
+// IsBinaryFormat determines if the given data represents a binary file
+func IsBinaryFormat(data []byte) bool {
 	var mimetype = http.DetectContentType(data)
 	return strings.Index(mimetype, "text/plain") < 0 &&
 		strings.Index(mimetype, "text/html") < 0 &&
 		strings.Index(mimetype, "text/xml") < 0
+}
+
+// GetExecutableName returns the name of the executable
+func GetExecutableName() string {
+	filename, err := osext.Executable()
+
+	if err != nil {
+		filename, _ = filepath.Abs(os.Args[0])
+	}
+
+	return filename
 }
