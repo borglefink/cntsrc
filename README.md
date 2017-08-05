@@ -86,13 +86,16 @@ then do a **go build** or a **go install**.
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
 If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
 
-_cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk).
+_cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk). 
+Daniel Theophanes's package for finding the os executable, 
+[github.com/kardianos/osext](https://github.com/kardianos/osext), 
+is also used for compatibility with older versions of Go.
 
 
 ## Background
 
 I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project to keep track of the size of it. So I wrote this. 
-This is the second implementation of this utility.
+This is the second implementation of this utility, a bit more modular than the first.
 The first version can be found at [github.com/borglefink/countsource](https://github.com/borglefink/countsource).
 
 ## License

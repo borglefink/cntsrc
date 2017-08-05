@@ -10,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 
-	//"github.com/davecgh/go-spew/spew"
-
 	"cntsrc/config"
 	"cntsrc/find"
 	"cntsrc/print"
@@ -54,14 +52,8 @@ func usage() {
 
 // main
 func main() {
-	var res = find.All(startdir, cfg, *showBigFiles)
-
-	print.Result(startdir, res)
-
-	//fmt.Printf("%#v\n\n%+v", res, res)
-	//spew.Dump(res)
-	//printAnalyticsHeader(res)
-
-	// Show result
-	//printResult(res)
+	print.Result(
+		startdir,
+		find.All(startdir, cfg, *showBigFiles),
+	)
 }
