@@ -10,8 +10,8 @@ import (
 	"strconv"
 )
 
-// int64ToString
-func int64ToString(n int64, separator rune) string {
+// Int64ToString shows a string representation of a big int
+func Int64ToString(n int64, separator rune) string {
 	var s = strconv.FormatInt(n, 10)
 	var startOffset = 0
 	var buff bytes.Buffer
@@ -40,9 +40,9 @@ func int64ToString(n int64, separator rune) string {
 	return buff.String()
 }
 
-// round return rounded version of x with prec precision.
+// Round return rounded version of x with prec precision.
 // http://grokbase.com/t/gg/golang-nuts/12ag1s0t5y/go-nuts-re-function-round
-func round(x float64, prec int) float64 {
+func Round(x float64, prec int) float64 {
 	var rounder float64
 	var pow = math.Pow(10, float64(prec))
 	var intermed = x * pow

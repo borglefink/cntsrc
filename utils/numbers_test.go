@@ -9,7 +9,7 @@ import "testing"
 // int64ToString tests
 func TestInt64ToString(t *testing.T) {
 	var feed = int64(100000)
-	var actualResult = int64ToString(feed, ' ')
+	var actualResult = Int64ToString(feed, ' ')
 	var expectedResult = "100 000"
 
 	if actualResult != expectedResult {
@@ -34,7 +34,7 @@ func TestRound(t *testing.T) {
 	}
 
 	for _, tt := range roundTests {
-		var actual = round(tt.number, tt.precision)
+		var actual = Round(tt.number, tt.precision)
 		if actual != tt.expected {
 			t.Fatalf("Rounding %v with precision %v. Expected %v but got %v", tt.number, tt.precision, tt.expected, actual)
 		}

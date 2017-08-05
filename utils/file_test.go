@@ -63,13 +63,13 @@ func TestIsBinaryFormatTrue(t *testing.T) {
 }
 
 //func getDirectory(pathFromFlag, defaultPath string) string {
-func TestGetDirectoryNotExist(t *testing.T) {
+func TestResolveStartdirNotExist(t *testing.T) {
 	if os.Getenv("BE_GETDIRECTORY") == "1" {
-		getDirectory(notexistdirectory, "")
+		ResolveStartdir(notexistdirectory, "")
 		return
 	}
 
-	var cmd = exec.Command(os.Args[0], "-test.run=TestGetDirectoryNotExist")
+	var cmd = exec.Command(os.Args[0], "-test.run=TestResolveStartdirNotExist")
 	cmd.Env = append(os.Environ(), "BE_GETDIRECTORY=1")
 
 	var err = cmd.Run()

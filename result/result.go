@@ -12,14 +12,16 @@ type Result struct {
 	TotalNumberOfLines int32
 	TotalSize          int64
 	Exclusions         []string
-	BigFiles           []FileSize
+	NumberOfBigFiles   int
+	BigFiles           FileSizes
 }
 
 // InitResult initialises the result
-func InitResult(extensions []string, exclusions []string) Result {
+func InitResult(extensions []string, exclusions []string, bigFiles int) Result {
 	var r = Result{
-		Extensions: make(map[string]*ExtensionEntry),
-		Exclusions: exclusions,
+		Extensions:       make(map[string]*ExtensionEntry),
+		Exclusions:       exclusions,
+		NumberOfBigFiles: bigFiles,
 	}
 
 	for _, ext := range extensions {

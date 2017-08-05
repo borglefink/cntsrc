@@ -25,7 +25,6 @@ var (
 	res                  result.Result
 	startdir             = ""
 	debug                = false
-	numberOfBigFiles     = 0
 	currentPathSeparator = string(os.PathSeparator)
 	mutex                = sync.Mutex{}
 )
@@ -35,11 +34,6 @@ var (
 // as a debugging facility for the config file
 func SetDebug(showDebug bool) {
 	debug = showDebug
-}
-
-// SetBigFiles sets the number of big files to be shown
-func SetBigFiles(showBigFiles int) {
-	numberOfBigFiles = showBigFiles
 }
 
 // isExcluded
@@ -107,7 +101,9 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		var contents, err = ioutil.ReadFile(filename)
 
 		if err != nil {
-			fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
+			if debug {
+				fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
+			}
 			return nil
 		}
 
@@ -130,7 +126,7 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		atomic.AddInt32(&(res.Extensions[ext].NumberOfLines), numberOfLines)
 		atomic.AddInt32(&res.TotalNumberOfLines, numberOfLines)
 
-		if numberOfBigFiles > 0 {
+		if res.NumberOfBigFiles > 0 {
 			mutex.Lock()
 			res.BigFiles = append(res.BigFiles, result.FileSize{
 				Name:  f.Name(),
@@ -145,9 +141,9 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 }
 
 // All returns the search result
-func All(dir string, cfg config.Config) result.Result {
+func All(dir string, cfg config.Config, bigFiles int) result.Result {
 	startdir = dir
-	res = result.InitResult(cfg.FileExtensions, cfg.Exclusions)
+	res = result.InitResult(cfg.FileExtensions, cfg.Exclusions, bigFiles)
 
 	var err = walk.Walk(startdir, forEachFileSystemEntry)
 	if err != nil {

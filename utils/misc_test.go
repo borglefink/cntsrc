@@ -12,7 +12,7 @@ import (
 
 // isInString tests
 func TestIsInStringFound(t *testing.T) {
-	var actualResult = isInString("Hello", []string{"xx", "He"})
+	var actualResult = IsInString("Hello", []string{"xx", "He"})
 	var expectedResult = true
 
 	if actualResult != expectedResult {
@@ -21,7 +21,7 @@ func TestIsInStringFound(t *testing.T) {
 }
 
 func TestIsInStringNotFound(t *testing.T) {
-	var actualResult = isInString("Hello", []string{"xx"})
+	var actualResult = IsInString("Hello", []string{"xx"})
 	var expectedResult = false
 
 	if actualResult != expectedResult {

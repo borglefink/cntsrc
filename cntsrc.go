@@ -10,10 +10,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/davecgh/go-spew/spew"
+	//"github.com/davecgh/go-spew/spew"
 
 	"cntsrc/config"
 	"cntsrc/find"
+	"cntsrc/print"
 	"cntsrc/utils"
 )
 
@@ -36,7 +37,6 @@ func init() {
 	}
 
 	find.SetDebug(*showDebug)
-	find.SetBigFiles(*showBigFiles)
 	startdir = utils.ResolveStartdir(flag.Arg(0), ".")
 	cfg = config.LoadConfig(*suggestedConfigFilename)
 }
@@ -54,10 +54,12 @@ func usage() {
 
 // main
 func main() {
-	var res = find.All(startdir, cfg)
+	var res = find.All(startdir, cfg, *showBigFiles)
+
+	print.Result(startdir, res)
 
 	//fmt.Printf("%#v\n\n%+v", res, res)
-	spew.Dump(res)
+	//spew.Dump(res)
 	//printAnalyticsHeader(res)
 
 	// Show result
