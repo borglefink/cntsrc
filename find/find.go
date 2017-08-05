@@ -10,9 +10,9 @@ import (
 
 	"github.com/MichaelTJones/walk"
 
-	"countsrc/config"
-	"countsrc/result"
-	"countsrc/utils"
+	"cntsrc/config"
+	"cntsrc/result"
+	"cntsrc/utils"
 )
 
 var (

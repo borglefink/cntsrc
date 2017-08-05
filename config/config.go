@@ -12,11 +12,11 @@ import (
 	"regexp"
 	"strings"
 
-	"countsrc/utils"
+	"cntsrc/utils"
 )
 
 const (
-	defaultConfigFileName = "countsrc.config"
+	defaultConfigFileName = "cntsrc.config"
 )
 
 var (
