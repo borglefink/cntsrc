@@ -30,12 +30,12 @@ Give a directory as a parameter. If none is given, the current directory is used
 All sub-directories will be searched as well, and included in the result.
 
 ```
-countsource [directory] [-c fullpathtoconfigfile] [-debug]
+countsource [directory] [-c pathtoconfigfile] [-debug]
 ```
 
 The optional parameter *-debug* is for analysis/debug, showing which directories and files are included or excluded.
 
-Use *cntsrc -?* to show usage.
+Use *cntsrc -h* to show usage.
 
 ## Config file
 

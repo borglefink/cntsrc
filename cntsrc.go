@@ -21,7 +21,7 @@ var (
 	suggestedConfigFilename = flag.String("c", "", "countsource configuration file")
 	showDebug               = flag.Bool("debug", false, "show full status of which files and directories in path are excluded or included.")
 	showBigFiles            = flag.Int("big", 0, "show the x largest files")
-	showHelp                = flag.Bool("?", false, "this help information")
+	showHelp                = flag.Bool("h", false, "this help information")
 	startdir                = "."
 	cfg                     config.Config
 )
