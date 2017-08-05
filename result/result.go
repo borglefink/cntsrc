@@ -1,4 +1,4 @@
-// Copyright 2014-2017 Erlend Johannessen.
+// Copyright 2017 Erlend Johannessen.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
@@ -8,8 +8,8 @@ package result
 type Result struct {
 	Directory          string
 	Extensions         map[string]*ExtensionEntry
-	TotalNumberOfFiles int
-	TotalNumberOfLines int
+	TotalNumberOfFiles int32
+	TotalNumberOfLines int32
 	TotalSize          int64
 	Exclusions         []string
 	BigFiles           []FileSize

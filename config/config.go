@@ -1,4 +1,4 @@
-// Copyright 2014-2017 Erlend Johannessen.
+// Copyright 2017 Erlend Johannessen.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
@@ -17,10 +17,6 @@ import (
 
 const (
 	defaultConfigFileName = "cntsrc.config"
-)
-
-var (
-	pathSeparator = ""
 )
 
 // Config contains the programs config, read from file
@@ -68,7 +64,8 @@ func resolveConfigFileName(suggestedConfigFilename string) string {
 	}
 
 	// if no other config file exist,
-	// return config file for the current directory
+	// return config file for the current directory,
+	// whether it exists or not
 	return defaultConfigFileName
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2014-2017 Erlend Johannessen.
+// Copyright 2017 Erlend Johannessen.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
@@ -8,7 +8,7 @@ package result
 type FileSize struct {
 	Name  string
 	Size  int64
-	Lines int
+	Lines int32
 }
 
 // FileSizes contains a slice of FileSize

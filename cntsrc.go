@@ -1,4 +1,4 @@
-// Copyright 2014-2017 Erlend Johannessen.
+// Copyright 2017 Erlend Johannessen.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
@@ -10,16 +10,18 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/davecgh/go-spew/spew"
+
 	"cntsrc/config"
 	"cntsrc/find"
 	"cntsrc/utils"
 )
 
 var (
-	suggestedConfigFilename = *flag.String("c", "", "countsource configuration file")
-	showDebug               = *flag.Bool("d", false, "show full status of which files and directories in path are excluded or included.")
-	showBigFiles            = *flag.Int("big", 0, "show the x largest files")
-	showHelp                = *flag.Bool("?", false, "this help information")
+	suggestedConfigFilename = flag.String("c", "", "countsource configuration file")
+	showDebug               = flag.Bool("debug", false, "show full status of which files and directories in path are excluded or included.")
+	showBigFiles            = flag.Int("big", 0, "show the x largest files")
+	showHelp                = flag.Bool("?", false, "this help information")
 	startdir                = "."
 	cfg                     config.Config
 )
@@ -29,12 +31,14 @@ func init() {
 	flag.Usage = usage
 	flag.Parse()
 
-	if showHelp {
+	if *showHelp {
 		usage()
 	}
 
+	find.SetDebug(*showDebug)
+	find.SetBigFiles(*showBigFiles)
 	startdir = utils.ResolveStartdir(flag.Arg(0), ".")
-	cfg = config.LoadConfig(suggestedConfigFilename)
+	cfg = config.LoadConfig(*suggestedConfigFilename)
 }
 
 // usage
@@ -52,8 +56,8 @@ func usage() {
 func main() {
 	var res = find.All(startdir, cfg)
 
-	fmt.Printf("%+v", res)
-
+	//fmt.Printf("%#v\n\n%+v", res, res)
+	spew.Dump(res)
 	//printAnalyticsHeader(res)
 
 	// Show result
