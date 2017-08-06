@@ -13,19 +13,19 @@ import (
 
 // createConfig creates the config, if it doesn't exist
 func createConfig(configFilename string) Config {
-	var sc Config
-
-	sc.FileExtensions = []string{".go", ".exe", ".png"}
-	sc.Exclusions = []string{".git", filepath.Base(configFilename)}
+	var sc = Config{
+		FileExtensions: []string{".go", ".css", ".js", ".html", ".png"},
+		Exclusions:     []string{".git", "node_modules", filepath.Base(configFilename)},
+	}
 
 	var jsonstring, err = json.MarshalIndent(&sc, "", "  ")
 	if err != nil {
-		fmt.Printf("json.Marshal(sc), %s %v\n", string(jsonstring), err)
+		fmt.Printf("Everything is wrong. json.Marshal(sc) didn't work; %s, error: %v\n", string(jsonstring), err)
 	}
 
 	err = ioutil.WriteFile(configFilename, jsonstring, 0666)
 	if err != nil {
-		fmt.Printf("ioutil.WriteFile, %v\n", err)
+		fmt.Printf("Couldn't write the %s to disk, %v\n", configFilename, err)
 	}
 
 	return sc

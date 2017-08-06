@@ -5,14 +5,13 @@
 package config
 
 import (
+	"cntsrc/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
-
-	"cntsrc/utils"
 )
 
 const (
@@ -35,6 +34,25 @@ func (sc Config) cleanupExclusions() Config {
 	return sc
 }
 
+// getExecutableConfigName
+func getExecutableConfigName(executableName string) string {
+	var executableConfigName = executableName
+
+	// if Windows platform, remove .exe
+	if strings.Index(executableConfigName, ".exe") > 0 {
+		executableConfigName = strings.Replace(executableConfigName, ".exe", "", 1)
+	}
+
+	return executableConfigName + ".config"
+
+}
+
+// stripAllComments
+func stripAllComments(jsonstring []byte) []byte {
+	var re = regexp.MustCompile("(?s)//.*?\n|/\\*.*?\\*/")
+	return re.ReplaceAll(jsonstring, nil)
+}
+
 // resolveConfigFileName
 func resolveConfigFileName(suggestedConfigFilename string) string {
 	// config filename from cli parameters
@@ -50,15 +68,8 @@ func resolveConfigFileName(suggestedConfigFilename string) string {
 	}
 
 	// config filename from the executable
-	var executableConfigName = utils.GetExecutableName()
-
-	// if Windows platform, remove .exe
-	if strings.Index(executableConfigName, ".exe") > 0 {
-		executableConfigName = strings.Replace(executableConfigName, ".exe", "", 1)
-	}
-
-	executableConfigName = executableConfigName + ".config"
-
+	var executableName = utils.GetExecutableName()
+	var executableConfigName = getExecutableConfigName(executableName)
 	if _, err := os.Stat(executableConfigName); err == nil {
 		return executableConfigName
 	}
@@ -76,12 +87,11 @@ func LoadConfig(suggestedConfigFilename string) Config {
 	// Read whole the file. If not exist, create it.
 	var jsonstring, err = ioutil.ReadFile(configFilename)
 	if err != nil {
-		return createConfig(configFilename).cleanupExclusions()
+		return createConfig(defaultConfigFileName).cleanupExclusions()
 	}
 
 	// Strip comments from config file
-	var re = regexp.MustCompile("(?s)//.*?\n|/\\*.*?\\*/")
-	var newJsonstring = re.ReplaceAll(jsonstring, nil)
+	var newJsonstring = stripAllComments(jsonstring)
 
 	// Create config to be returned
 	var c Config
