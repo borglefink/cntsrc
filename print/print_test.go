@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"reflect"
 	"sync"
 	"testing"
 
@@ -17,6 +18,33 @@ import (
 var (
 	mutex = sync.Mutex{}
 )
+
+// printHeader tests
+func TestPrintHeader(t *testing.T) {
+	var r, w, _ = os.Pipe()
+
+	// redirecting output to a r/w buffer
+	mutex.Lock()
+	var oldStdout = os.Stdout
+	os.Stdout = w
+	printHeader("/home/user/code/project")
+	w.Close()
+	os.Stdout = oldStdout
+	mutex.Unlock()
+
+	var actualResult, _ = ioutil.ReadAll(r)
+	var expectedResult = []byte(`
+Directory processed:
+/home/user/code/project
+---------------------------------------------------------------
+filetype        #files       #lines  line%          size  size%
+---------------------------------------------------------------
+`)
+
+	if bytes.Compare(actualResult, expectedResult) != 0 {
+		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
+	}
+}
 
 // printEntry tests
 func TestPrintEntrySource(t *testing.T) {
@@ -164,33 +192,92 @@ check extensions in config file.
 	}
 }
 
-/*
+// getKeys tests
+func TestGetKeys(t *testing.T) {
+	//var extensions = make(map[string]*result.ExtensionEntry) //[]string{".png", ".exe", ".go"}
+	var extensions = map[string]*result.ExtensionEntry{
+		".xml":  &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: false},
+		".js":   &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: false},
+		".go":   &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: false},
+		".css":  &result.ExtensionEntry{NumberOfFiles: 0, IsBinary: false},
+		".html": &result.ExtensionEntry{NumberOfFiles: 0, IsBinary: false},
+		".zip":  &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: true},
+		".png":  &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: true},
+		".exe":  &result.ExtensionEntry{NumberOfFiles: 0, IsBinary: true},
+		"":      &result.ExtensionEntry{NumberOfFiles: 1, IsBinary: true},
+	}
+	var actualResult1, actualResult2 = getKeys(extensions)
+	var expectedResult1 = []string{".go", ".js", ".xml"}
+	var expectedResult2 = []string{"", ".png", ".zip"}
 
-
-
-// Result displays the result from the search
-func Result(startdir string, res result.Result) {
-	// Show result header
-	printHeader(startdir)
-
-	// Sorting keys for presentation
-	var keys, binaryKeys = getKeys(res.Extensions)
-
-	// Show result for sourcecode, only for extensions found
-	for _, ext := range keys {
-		printEntry(res.Extensions[ext], res.TotalNumberOfLines, res.TotalSize)
+	if !reflect.DeepEqual(actualResult1, expectedResult1) {
+		t.Fatalf("1.Expected %v but got %v", expectedResult1, actualResult1)
 	}
 
-	// For convenience, show result for binaries separately
-	for _, ext := range binaryKeys {
-		printEntry(res.Extensions[ext], 0, res.TotalSize)
-	}
-
-	// Show footer
-	printFooter(res)
-
-	if len(res.BigFiles) > 0 {
-		printBigFiles(res)
+	if !reflect.DeepEqual(actualResult2, expectedResult2) {
+		t.Fatalf("2.Expected %v but got %v", expectedResult2, actualResult2)
 	}
 }
-*/
+
+// Result tests
+func TestResult(t *testing.T) {
+	var res = result.Result{
+		Extensions: map[string]*result.ExtensionEntry{
+			".xml":  &result.ExtensionEntry{ExtensionName: ".xml", NumberOfFiles: 1, NumberOfLines: 10, Filesize: 200, IsBinary: false},
+			".js":   &result.ExtensionEntry{ExtensionName: ".js", NumberOfFiles: 1, NumberOfLines: 10, Filesize: 200, IsBinary: false},
+			".go":   &result.ExtensionEntry{ExtensionName: ".go", NumberOfFiles: 10, NumberOfLines: 100, Filesize: 2000, IsBinary: false},
+			".css":  &result.ExtensionEntry{ExtensionName: ".css", NumberOfFiles: 0, NumberOfLines: 0, Filesize: 0, IsBinary: false},
+			".html": &result.ExtensionEntry{ExtensionName: ".html", NumberOfFiles: 0, NumberOfLines: 0, Filesize: 0, IsBinary: false},
+			".zip":  &result.ExtensionEntry{ExtensionName: ".zip", NumberOfFiles: 1, Filesize: 200, IsBinary: true},
+			".png":  &result.ExtensionEntry{ExtensionName: ".png", NumberOfFiles: 1, Filesize: 200, IsBinary: true},
+			".exe":  &result.ExtensionEntry{ExtensionName: ".exe", NumberOfFiles: 0, Filesize: 0, IsBinary: true},
+		},
+		TotalNumberOfFiles: 14,
+		TotalNumberOfLines: 120,
+		TotalSize:          2800,
+		NumberOfBigFiles:   3,
+		BigFiles: []result.FileSize{
+			{Name: "File1", Size: 1000, Lines: 10},
+			{Name: "File2", Size: 3000, Lines: 30},
+			{Name: "File3", Size: 2000, Lines: 20},
+			{Name: "File4", Size: 500, Lines: 5},
+		},
+	}
+	var r, w, _ = os.Pipe()
+
+	// redirecting output to a r/w buffer
+	mutex.Lock()
+	var oldStdout = os.Stdout
+	os.Stdout = w
+	Result("/home/user/code/project", res)
+	w.Close()
+	os.Stdout = oldStdout
+	mutex.Unlock()
+
+	var actualResult, _ = ioutil.ReadAll(r)
+	var expectedResult = []byte(`
+Directory processed:
+/home/user/code/project
+---------------------------------------------------------------
+filetype        #files       #lines  line%          size  size%
+---------------------------------------------------------------
+.go                 10          100   83.3         2 000   71.4
+.js                  1           10    8.3           200    7.1
+.xml                 1           10    8.3           200    7.1
+.png                 1                               200    7.1
+.zip                 1                               200    7.1
+---------------------------------------------------------------
+Total:              14          120  100.0         2 800  100.0
+
+
+The   3 largest files are:                 #lines
+-------------------------------------------------
+File2                                          30
+File3                                          20
+File1                                          10
+`)
+
+	if bytes.Compare(actualResult, expectedResult) != 0 {
+		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
+	}
+}
