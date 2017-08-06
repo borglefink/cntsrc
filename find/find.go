@@ -145,7 +145,7 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 	return nil
 }
 
-// All returns the search result
+// All searches the given directory and returns the search result
 func All(dir string, cfg config.Config, bigFiles int) result.Result {
 	startdir = dir
 	res = result.InitResult(cfg.FileExtensions, cfg.Exclusions, bigFiles)
