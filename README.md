@@ -72,7 +72,7 @@ with default values similar to the following:
 ```
 
 The full file path is searched for exclusion string. 
-Directories can be qualified/separated with the standard operating system path separator i.e. *\* on windows, */* on unix/mac. 
+Directories can be qualified/separated with the standard operating system path separator i.e. *\* on windows, */* on unix/osx. 
 Note that the windows path separator *\* needs to be escaped as *\\*.
 
 It is possible to put comments in the config file. 
@@ -85,14 +85,19 @@ Clone the repository into your GOPATH somewhere and resolve dependencies (see be
 then do a **go install**.
 
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
-If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
+If you have several projects using identical config files, 
+use a single config file and refer to it with the *-c* parameter when counting.
 
 ## Dependencies
 
-_cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk). 
+_cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. 
+See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk). 
+
 Daniel Theophanes's package for finding the os executable, 
 [github.com/kardianos/osext](https://github.com/kardianos/osext), 
-is also used for compatibility with older versions of Go. Resolve by doing:
+is also used for compatibility with older versions of Go. 
+
+Resolve by doing:
 ```
 go get github.com/MichaelTJones/walk
 go get github.com/kardianos/osext
@@ -101,9 +106,10 @@ go get github.com/kardianos/osext
 ## Background
 
 I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project to keep track of the size of it. So I wrote this. 
-This is the second implementation of this utility, a bit more modular than the first.
-The first version can be found at [github.com/borglefink/countsource](https://github.com/borglefink/countsource).
+This is a re-implemetation of the original utility, 
+found at [github.com/borglefink/countsource](https://github.com/borglefink/countsource).
 
 ## License
 
-A MIT license is used here - do what you want with this. Nice though if improvements and corrections could trickle back to me somehow. :-)
+A MIT license is used here - do what you want with this. 
+Nice though if improvements and corrections could trickle back to me somehow. :-)
