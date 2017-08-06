@@ -53,7 +53,7 @@ with default values similar to the following:
  * For binary files, only file size is counted
  */
 {
-  "Extensions": [
+  "FileExtensions": [
     ".css",
     ".html",
     ".js",
