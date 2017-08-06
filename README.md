@@ -30,7 +30,7 @@ Give a directory as a parameter. If none is given, the current directory is used
 All sub-directories will be searched as well, and included in the result.
 
 ```
-countsource [directory] [-c pathtoconfigfile] [-debug]
+countsource [-c pathtoconfigfile] [-debug] [directory] 
 ```
 
 The optional parameter *-debug* is for analysis/debug, showing which directories and files are included or excluded.
@@ -63,6 +63,7 @@ with default values similar to the following:
   "Exclusions": [
     "bin",
     "obj",
+    "node_modules",
     "Scripts\\jquery.ui",
     "cntsrc.config",
     "jquery.min.js"
@@ -81,7 +82,7 @@ Only Go-type comments are allowed, single line comments starting with //, or blo
 ## Install
 
 Clone the repository into your GOPATH somewhere and resolve the only third party dependency,
-then do a **go build** or a **go install**.
+then do a **go install**.
 
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
 If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
