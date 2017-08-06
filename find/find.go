@@ -17,6 +17,7 @@ import (
 	"github.com/MichaelTJones/walk"
 
 	"cntsrc/config"
+	"cntsrc/print"
 	"cntsrc/result"
 	"cntsrc/utils"
 )
@@ -29,11 +30,15 @@ var (
 	mutex                = sync.Mutex{}
 )
 
-// SetDebug turns on (or off) showing of
-// included/excluded files/directories
-// as a debugging facility for the config file
+// SetDebug turns on (or off) showing of included/excluded
+// files/directories as a debugging facility for the
+// exclusions in the config file
 func SetDebug(showDebug bool) {
 	debug = showDebug
+
+	if debug {
+		print.DebugHeader()
+	}
 }
 
 // isExcluded
