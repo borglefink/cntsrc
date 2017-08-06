@@ -55,6 +55,7 @@ func Result(startdir string, res result.Result) {
 	}
 }
 
+// printBigFiles
 func printBigFiles(res result.Result) {
 	sort.Sort(res.BigFiles)
 	fmt.Printf("\n\nThe %3d largest files are:                 #lines\n", res.NumberOfBigFiles)
