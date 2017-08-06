@@ -76,7 +76,7 @@ If you have several projects using identical config files,
 use a single config file and refer to it with the *-c* parameter when counting.
 
 When traversing the file system, each file system entry is examined, 
-and will be excluded if the file- or directoryname (including path) contains the exclusion string.
+and will be excluded if the file- or directoryname (including path) contains one of the exclusion strings.
 Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix and osx. 
 Note that the windows path separator \ needs to be escaped  as \\\\ inside a json string.
 
