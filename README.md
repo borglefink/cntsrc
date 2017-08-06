@@ -72,8 +72,8 @@ with default values similar to the following:
 ```
 
 The full file path is searched for exclusion string. 
-Directories can be qualified/separated with the standard operating system path separator i.e. *\* on windows, */* on unix/osx. 
-Note that the windows path separator *\* needs to be escaped as *\\*.
+Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix/osx. 
+Note that the windows path separator \ needs to be escaped as \\\\.
 
 It is possible to put comments in the config file. 
 Note that comments are normally not allowed in json, so these comments are stripped from the config file before it is read.
