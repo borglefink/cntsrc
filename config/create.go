@@ -14,8 +14,8 @@ import (
 // createConfig creates the config, if it doesn't exist
 func createConfig(configFilename string) Config {
 	var sc = Config{
-		FileExtensions: []string{".go", ".css", ".js", ".html", ".png"},
-		Exclusions:     []string{".git", "node_modules", filepath.Base(configFilename)},
+		FileExtensions: []string{".go", ".css", ".js", ".html", ".png", ".jpg"},
+		Exclusions:     []string{".git", "\\bin\\", "\\node_modules\\", filepath.Base(configFilename)},
 	}
 
 	var jsonstring, err = json.MarshalIndent(&sc, "", "  ")

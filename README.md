@@ -62,10 +62,9 @@ with default values similar to the following:
   ],
   "Exclusions": [
     ".git",
-    "bin",
-    "obj",
-    "node_modules",
-    "Scripts\\jquery.ui",
+    "\\bin\\",
+    "\\node_modules\\",
+    "Scripts\\jquery\\",
     "cntsrc.config"
   ]
 }
