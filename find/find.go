@@ -58,12 +58,12 @@ func showDirectoriesOrFiles(isDir bool, filename string, excluded bool) {
 
 	var status string
 	if excluded {
-		status = " EXCLUDED "
+		status = "EXCLUDED"
 	} else {
-		status = "          "
+		status = "        "
 	}
 
-	fmt.Printf("%s %s%s\n", prompt, status, strings.Replace(filename, startdir+currentPathSeparator, "", 1))
+	fmt.Printf("%s %s %s\n", prompt, status, strings.Replace(filename, startdir+currentPathSeparator, "", 1))
 }
 
 // forEachFileSystemEntry
