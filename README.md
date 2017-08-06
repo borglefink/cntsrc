@@ -72,7 +72,7 @@ with default values similar to the following:
 ```
 
 The full file path is searched for exclusion string. 
-Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix/osx. 
+Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix and osx. 
 Note that the windows path separator \ needs to be escaped as \\\\.
 
 It is possible to put comments in the config file. 
