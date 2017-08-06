@@ -16,7 +16,7 @@ type Result struct {
 	BigFiles           FileSizes
 }
 
-// InitResult initialises the result
+// InitResult initialises a new instance of the result
 func InitResult(extensions []string, exclusions []string, bigFiles int) Result {
 	var r = Result{
 		Extensions:       make(map[string]*ExtensionEntry),
