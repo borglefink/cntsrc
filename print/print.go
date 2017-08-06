@@ -88,9 +88,9 @@ func getKeys(extensions map[string]*result.ExtensionEntry) ([]string, []string) 
 }
 
 // printHeader
-func printHeader(root string) {
+func printHeader(startdir string) {
 	fmt.Printf("\nDirectory processed:\n")
-	fmt.Printf("%v\n", root)
+	fmt.Printf("%v\n", startdir)
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
 	fmt.Printf(formatString, "filetype", "#files", "#lines", "line%", "size", "size%")
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
@@ -131,16 +131,17 @@ func printFooter(res result.Result) {
 	if res.TotalNumberOfFiles == 0 {
 		fmt.Printf("No files found.\n\nCheck given directory,or maybe \ncheck extensions in config file.\n")
 		fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
-	} else {
-		fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
-		fmt.Printf(
-			formatString,
-			"Total:",
-			utils.Int64ToString(int64(res.TotalNumberOfFiles), thousandsSeparator),
-			utils.Int64ToString(int64(res.TotalNumberOfLines), thousandsSeparator),
-			"100.0",
-			utils.Int64ToString(int64(res.TotalSize), thousandsSeparator),
-			"100.0",
-		)
+		return
 	}
+
+	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
+	fmt.Printf(
+		formatString,
+		"Total:",
+		utils.Int64ToString(int64(res.TotalNumberOfFiles), thousandsSeparator),
+		utils.Int64ToString(int64(res.TotalNumberOfLines), thousandsSeparator),
+		"100.0",
+		utils.Int64ToString(int64(res.TotalSize), thousandsSeparator),
+		"100.0",
+	)
 }
