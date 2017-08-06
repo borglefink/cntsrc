@@ -81,7 +81,7 @@ Only Go-type comments are allowed, single line comments starting with //, or blo
 
 ## Install
 
-Clone the repository into your GOPATH somewhere and resolve the only third party dependency,
+Clone the repository into your GOPATH somewhere and resolve dependencies (see below),
 then do a **go install**.
 
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
@@ -92,8 +92,11 @@ If you have several projects using identical config files, use a single config f
 _cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk). 
 Daniel Theophanes's package for finding the os executable, 
 [github.com/kardianos/osext](https://github.com/kardianos/osext), 
-is also used for compatibility with older versions of Go.
-
+is also used for compatibility with older versions of Go. Resolve by doing:
+```
+go get github.com/MichaelTJones/walk
+go get github.com/kardianos/osext
+```
 
 ## Background
 
