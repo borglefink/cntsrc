@@ -61,17 +61,22 @@ with default values similar to the following:
     ".png"
   ],
   "Exclusions": [
+    ".git",
     "bin",
     "obj",
     "node_modules",
     "Scripts\\jquery.ui",
-    "cntsrc.config",
-    "jquery.min.js"
+    "cntsrc.config"
   ]
 }
 ```
 
-The full file path is searched for exclusion string. 
+Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
+If you have several projects using identical config files, 
+use a single config file and refer to it with the *-c* parameter when counting.
+
+When traversing the file system, each file system entry is examined, 
+and will be excluded if the file- or directoryname (including path) contains the exclusion string.
 Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix and osx. 
 Note that the windows path separator \ needs to be escaped  as \\\\ inside a json string.
 
@@ -83,10 +88,6 @@ Only Go-type comments are allowed, single line comments starting with //, or blo
 
 Clone the repository into your GOPATH somewhere and resolve dependencies (see below),
 then do a **go install**.
-
-Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
-If you have several projects using identical config files, 
-use a single config file and refer to it with the *-c* parameter when counting.
 
 ## Dependencies
 
