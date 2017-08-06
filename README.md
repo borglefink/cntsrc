@@ -77,7 +77,7 @@ Note that the windows path separator *\* needs to be escaped as *\\*.
 
 It is possible to put comments in the config file. 
 Note that comments are normally not allowed in json, so these comments are stripped from the config file before it is read.
-Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /\* and *\/.
+Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /\* and \*/.
 
 ## Install
 
