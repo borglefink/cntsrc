@@ -124,11 +124,12 @@ func TestPrintBigFiles(t *testing.T) {
 	var actualResult, _ = ioutil.ReadAll(r)
 	var expectedResult = []byte(`
 
-The   3 largest files are:                 #lines
--------------------------------------------------
-File2                                          30
-File3                                          20
-File1                                          10
+The 3 largest files are:                                 #lines
+---------------------------------------------------------------
+
+File2                                                        30
+File3                                                        20
+File1                                                        10
 `)
 
 	if bytes.Compare(actualResult, expectedResult) != 0 {
@@ -270,11 +271,12 @@ filetype        #files       #lines  line%          size  size%
 Total:              14          120  100.0         2 800  100.0
 
 
-The   3 largest files are:                 #lines
--------------------------------------------------
-File2                                          30
-File3                                          20
-File1                                          10
+The 3 largest files are:                                 #lines
+---------------------------------------------------------------
+
+File2                                                        30
+File3                                                        20
+File1                                                        10
 `)
 
 	if bytes.Compare(actualResult, expectedResult) != 0 {

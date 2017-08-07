@@ -17,6 +17,9 @@ const (
 	// formatString consists of "filetype", "#files", "#lines", "line%", "size", "size%"
 	formatString       = "%-11s %10s %12s %6s %13s %6s\n"
 	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13 + 1 + 6
+
+	// BigFileLength is the maximum length for name of "big file"
+	BigFileLength = 56
 )
 
 var (
@@ -58,11 +61,16 @@ func Result(startdir string, res result.Result) {
 // printBigFiles
 func printBigFiles(res result.Result) {
 	sort.Sort(res.BigFiles)
-	fmt.Printf("\n\nThe %3d largest files are:                 #lines\n", res.NumberOfBigFiles)
-	fmt.Printf("-------------------------------------------------\n")
+	var label = fmt.Sprintf("The %d largest files are:", res.NumberOfBigFiles)
+	fmt.Printf("\n\n%-56s #lines\n", label)
+	fmt.Printf("---------------------------------------------------------------\n")
+
 	for i := 0; i < res.NumberOfBigFiles; i++ {
 		if i < len(res.BigFiles) {
-			fmt.Printf("%-42s %6d\n", res.BigFiles[i].Name, res.BigFiles[i].Lines)
+			if i%10 == 0 {
+				fmt.Println()
+			}
+			fmt.Printf("%-56s %6d\n", res.BigFiles[i].Name, res.BigFiles[i].Lines)
 		}
 	}
 }

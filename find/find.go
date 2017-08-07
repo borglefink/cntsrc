@@ -134,7 +134,7 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		if res.NumberOfBigFiles > 0 {
 			mutex.Lock()
 			res.BigFiles = append(res.BigFiles, result.FileSize{
-				Name:  f.Name(),
+				Name:  truncBigFileName(startdir, filename),
 				Size:  size,
 				Lines: numberOfLines,
 			})
@@ -143,6 +143,24 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 	}
 
 	return nil
+}
+
+// truncBigFileName
+func truncBigFileName(startdir, bigFileName string) string {
+	// remove startdir path
+	var startdirpos = strings.Index(bigFileName, startdir)
+	if startdirpos >= 0 {
+		bigFileName = bigFileName[len(startdir)+1:]
+	}
+
+	// possibly truncate name and add "..." in front
+	var bigFileNameLength = len(bigFileName)
+	if bigFileNameLength > print.BigFileLength {
+		bigFileName = bigFileName[(bigFileNameLength - print.BigFileLength):]
+		bigFileName = "..." + bigFileName[3:]
+	}
+
+	return bigFileName
 }
 
 // All searches the given directory and returns the search result
