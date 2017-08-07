@@ -1,6 +1,3 @@
-[![MIT License](https://badges.frapsoft.com/os/mit/mit.png?v=103)](https://opensource.org/licenses/mit-license.php)
-[![works badge](https://cdn.rawgit.com/nikku/works-on-my-machine/v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
-
 ## Description
 
 *cntsrc* is a small command line utility for counting source code lines. 
