@@ -8,7 +8,7 @@ When counting source code lines, newline will be determined as type windows (CRL
 The result will look along the lines of this:
 ```
 Directory processed:
-c:\projectdirectory
+/home/myuser/projectdirectory
 ---------------------------------------------------------------
 filetype        #files       #lines  line%          size  size%
 ---------------------------------------------------------------
