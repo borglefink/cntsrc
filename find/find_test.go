@@ -51,28 +51,3 @@ func TestShowDirectoriesOrFiles(t *testing.T) {
 		}
 	}
 }
-
-/*
-func showDirectoriesOrFiles(isDir bool, filename string, excluded bool) {
-	if !debug {
-		return
-	}
-
-	var prompt string
-	if isDir {
-		prompt = "Directory"
-	} else {
-		prompt = "File     "
-	}
-
-	var status string
-	if excluded {
-		status = "EXCLUDED"
-	} else {
-		status = "        "
-	}
-
-	fmt.Printf("%s %s %s\n", prompt, status, strings.Replace(filename, startdir+currentPathSeparator, "", 1))
-}
-
-*/
