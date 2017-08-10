@@ -43,11 +43,10 @@ func init() {
 func usage() {
 	var executableName = filepath.Base(os.Args[0])
 	fmt.Printf("\nCNTSRC (C) Copyright 2017 Erlend Johannessen\n")
-	fmt.Printf("%s counts sourcecode lines for given directory and sub-directories.\n", executableName)
-	fmt.Printf("\nUsage: %s [flags] [dirname]  \n", executableName)
+	fmt.Printf("%s counts source-code lines for given directory and sub-directories.\n", executableName)
+	fmt.Printf("\nUsage: %s [options] [dirname]  \n", executableName)
 	fmt.Printf("  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")
 	flag.PrintDefaults()
-	os.Exit(0)
 }
 
 // main
