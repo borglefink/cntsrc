@@ -4,10 +4,7 @@
 
 package utils
 
-import (
-	"os"
-	"strings"
-)
+import "strings"
 
 // IsInString returns true if the string is found in the target
 func IsInString(stringToSearch string, stringsToSearchFor []string) bool {
@@ -21,23 +18,4 @@ func IsInString(stringToSearch string, stringsToSearchFor []string) bool {
 	}
 
 	return isFound
-}
-
-// isInSlice
-func isInSlice(sliceToSearch []string, stringToSearchFor string) bool {
-	var isFound = false
-
-	for _, searchItem := range sliceToSearch {
-		if searchItem == stringToSearchFor {
-			isFound = true
-			break
-		}
-	}
-
-	return isFound
-}
-
-// isWindows
-func isWindows() bool {
-	return strings.Index(os.Getenv("OS"), "Windows") >= 0
 }

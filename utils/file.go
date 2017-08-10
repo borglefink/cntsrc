@@ -67,14 +67,6 @@ func ResolveStartdir(pathFromFlag, defaultPath string) string {
 	return path
 }
 
-// getPathSeparator
-func getPathSeparator() string {
-	if isWindows() {
-		return windowsPathSeparator
-	}
-	return unixPathSeparator
-}
-
 // IsBinaryFormat determines if the given data represents a binary file
 func IsBinaryFormat(data []byte) bool {
 	var mimetype = http.DetectContentType(data)
