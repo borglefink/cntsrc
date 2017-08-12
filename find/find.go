@@ -48,27 +48,14 @@ func isExcluded(filename string) bool {
 	return utils.IsInString(fulldir, res.Exclusions)
 }
 
-// showDirectoriesOrFiles
-func showDirectoriesOrFiles(isDir bool, filename string, excluded bool) {
-	if !debug {
-		return
-	}
-
-	var prompt string
-	if isDir {
-		prompt = "Directory"
-	} else {
-		prompt = "File     "
-	}
-
-	var status string
+// debugIncludedExcludedFiles
+func debugIncludedExcludedFiles(filename string, excluded bool) {
+	var status = "        "
 	if excluded {
 		status = "EXCLUDED"
-	} else {
-		status = "        "
 	}
 
-	fmt.Printf("%s %s %s\n", prompt, status, strings.Replace(filename, startdir+currentPathSeparator, "", 1))
+	fmt.Printf("File %s %s\n", status, strings.Replace(filename, startdir+currentPathSeparator, "", 1))
 }
 
 // forEachFileSystemEntry
@@ -77,14 +64,15 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		return nil
 	}
 
+	// Ignore directories
+	if f.IsDir() {
+		return nil
+	}
+
 	var excluded = isExcluded(filename)
 
 	if debug {
-		showDirectoriesOrFiles(f.IsDir(), filename, excluded)
-	}
-
-	if f.IsDir() {
-		return nil
+		debugIncludedExcludedFiles(filename, excluded)
 	}
 
 	if !excluded {

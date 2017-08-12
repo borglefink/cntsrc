@@ -20,15 +20,12 @@ var (
 func TestShowDirectoriesOrFiles(t *testing.T) {
 	debug = true
 	var debugTests = []struct {
-		isDir    bool
-		filename string
-		excluded bool
-		expected []byte
+		entryname string
+		excluded  bool
+		expected  []byte
 	}{
-		{true, "dirname1", false, []byte("Directory          dirname1\n")},
-		{true, "dirname2", true, []byte("Directory EXCLUDED dirname2\n")},
-		{false, "dirname3", false, []byte("File               dirname3\n")},
-		{false, "dirname4", true, []byte("File      EXCLUDED dirname4\n")},
+		{"entry1", false, []byte("File          entry1\n")},
+		{"entry2", true, []byte("File EXCLUDED entry2\n")},
 	}
 
 	for _, tt := range debugTests {
@@ -38,7 +35,7 @@ func TestShowDirectoriesOrFiles(t *testing.T) {
 		testmutex.Lock()
 		var oldStdout = os.Stdout
 		os.Stdout = w
-		showDirectoriesOrFiles(tt.isDir, tt.filename, tt.excluded)
+		debugIncludedExcludedFiles(tt.entryname, tt.excluded)
 
 		w.Close()
 		os.Stdout = oldStdout
@@ -47,7 +44,7 @@ func TestShowDirectoriesOrFiles(t *testing.T) {
 		var actual, _ = ioutil.ReadAll(r)
 
 		if bytes.Compare(actual, tt.expected) != 0 {
-			t.Fatalf("Debug info for %s. Expected |%v| but got |%v|", tt.filename, tt.expected, actual)
+			t.Fatalf("Debug info for %s. Expected |%v| but got |%v|", tt.entryname, tt.expected, actual)
 		}
 	}
 }
