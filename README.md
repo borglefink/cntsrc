@@ -27,10 +27,12 @@ Give a directory as a parameter. If none is given, the current directory is used
 All sub-directories will be searched as well, and included in the result.
 
 ```
-countsource [-c pathtoconfigfile] [-debug] [directory] 
+countsource [-c pathtoconfigfile] [-big n] [-debug] [directory] 
 ```
 
-The optional parameter *-debug* is for analysis/debug, showing which directories and files are included or excluded.
+The optional parameter *-big n* can be added to get the *n* largest source code files, in terms of source code lines.
+
+The optional parameter *-debug* is for analysis/debug, showing which directories and files are included or excluded. This is included to make it easier to set up the config file properly.
 
 Use *cntsrc -h* to show usage.
 
@@ -59,9 +61,9 @@ with default values similar to the following:
   ],
   "Exclusions": [
     ".git",
-    "\\bin\\",
-    "\\node_modules\\",
-    "Scripts\\jquery\\",
+    "\\bin",
+    "\\node_modules",
+    "Scripts\\jquery",
     "cntsrc.config"
   ]
 }
@@ -102,9 +104,10 @@ go get github.com/kardianos/osext
 
 ## Background
 
-I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project to keep track of the size of it. So I wrote this. 
-This is a re-implemetation of the original utility, 
-found at [github.com/borglefink/countsource](https://github.com/borglefink/countsource).
+I wanted to count the number of source code lines for source code in an ASP.NET MVC project, to keep track of the size of it.
+So I wrote _Cntsrc_. 
+This is a re-implemetation of the original utility, found at
+[github.com/borglefink/countsource](https://github.com/borglefink/countsource).
 
 ## License
 
