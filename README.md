@@ -27,7 +27,7 @@ Give a directory as a parameter. If none is given, the current directory is used
 All sub-directories will be searched as well, and included in the result.
 
 ```
-countsource [-c pathtoconfigfile] [-big n] [-debug] [directory] 
+cntsrc [-c pathtoconfigfile] [-big n] [-debug] [directory] 
 ```
 
 The optional parameter *-big n* can be added to get the *n* largest source code files, in terms of source code lines.
