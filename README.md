@@ -69,17 +69,17 @@ with default values similar to the following:
 }
 ```
 
-Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
+Create a config file for a project you want to count source code for, and put the config file in the root of that project directory.
 If you have several projects using identical config files, 
 use a single config file and refer to it with the *-c* parameter when counting.
 
 When traversing the file system, each file system entry is examined, 
 and will be excluded if the file- or directoryname (including path) contains one of the exclusion strings.
-Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on unix and osx. 
+Directories can be qualified/separated with the standard operating system path separator i.e. \ on windows, / on linux and osx. 
 Note that the windows path separator \ needs to be escaped  as \\\\ inside a json string.
 
 It is possible to put comments in the config file. 
-Note that comments are normally not allowed in json, so these comments are stripped from the config file before it is read.
+Note that comments are normally not allowed in json, these comments are stripped from the config file before it is interpreted as json.
 Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /\* and \*/.
 
 ## Install
