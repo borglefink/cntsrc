@@ -32,7 +32,7 @@ cntsrc [-c pathtoconfigfile] [-big n] [-debug] [directory]
 
 The optional parameter *-big n* can be added to get the *n* largest source code files, in terms of source code lines.
 
-The optional parameter *-debug* is for analysis/debug, showing which files are included or excluded. This parameter is makes it easier to set up the config file properly.
+The optional parameter *-debug* is for analysis/debug, showing which files are included or excluded. This parameter makes it easier to set up the config file properly.
 
 Use *cntsrc -h* to show usage.
 
