@@ -1,6 +1,6 @@
 ## Description
 
-*cntsrc* is a small command line utility for counting source code lines. 
+*cntsrc* is a command line utility for counting source code lines. 
 It can also count binaries (number of files and filesize only).
 A config file configures what files to count (see config section below).
 When counting source code lines, newline will be determined as type windows (CRLF) or unix/osx (LF) for each file.
