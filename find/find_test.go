@@ -6,7 +6,7 @@ package find
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"os"
 	"sync"
 	"testing"
@@ -41,9 +41,9 @@ func TestShowDirectoriesOrFiles(t *testing.T) {
 		os.Stdout = oldStdout
 		testmutex.Unlock()
 
-		var actual, _ = ioutil.ReadAll(r)
+		var actual, _ = io.ReadAll(r)
 
-		if bytes.Compare(actual, tt.expected) != 0 {
+		if !bytes.Equal(actual, tt.expected) {
 			t.Fatalf("Debug info for %s. Expected |%v| but got |%v|", tt.entryname, tt.expected, actual)
 		}
 	}
