@@ -17,9 +17,6 @@ const (
 	// formatString consists of "filetype", "#files", "#lines", "line%", "size", "size%"
 	formatString       = "%-11s %10s %12s %6s %13s %6s\n"
 	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13 + 1 + 6
-
-	// BigFileLength is the maximum length for name of "big file"
-	BigFileLength = 56
 )
 
 var (

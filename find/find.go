@@ -7,7 +7,6 @@ package find
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,6 +19,11 @@ import (
 	"cntsrc/print"
 	"cntsrc/result"
 	"cntsrc/utils"
+)
+
+const (
+	// bigFileMaxLength is the maximum length for name of a "big file"
+	bigFileMaxLength = 56
 )
 
 var (
@@ -75,59 +79,61 @@ func forEachFileSystemEntry(filename string, f os.FileInfo, err error) error {
 		debugIncludedExcludedFiles(filename, excluded)
 	}
 
-	if !excluded {
-		var ext = filepath.Ext(filename)
+	if excluded {
+		return nil
+	}
 
-		var entry, willBeCounted = res.Extensions[ext]
-		if !willBeCounted {
-			return nil
+	var ext = filepath.Ext(filename)
+
+	var entry, willBeCounted = res.Extensions[ext]
+	if !willBeCounted {
+		return nil
+	}
+
+	atomic.AddInt32(&(entry.NumberOfFiles), 1)
+	atomic.AddInt32(&res.TotalNumberOfFiles, 1)
+
+	var size = f.Size()
+	atomic.AddInt64(&(entry.Filesize), size)
+	atomic.AddInt64(&res.TotalSize, size)
+
+	// Slurp the whole file into memory
+	var contents, readerr = os.ReadFile(filename)
+
+	if readerr != nil {
+		if debug {
+			fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, readerr)
 		}
+		return readerr
+	}
 
-		atomic.AddInt32(&(entry.NumberOfFiles), 1)
-		atomic.AddInt32(&res.TotalNumberOfFiles, 1)
+	var isBinary = utils.IsBinaryFormat(contents)
 
-		var size = f.Size()
-		atomic.AddInt64(&(entry.Filesize), size)
-		atomic.AddInt64(&res.TotalSize, size)
-
-		// Slurp the whole file into memory
-		var contents, err = ioutil.ReadFile(filename)
-
-		if err != nil {
-			if debug {
-				fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
-			}
-			return nil
+	// Binary files will not have "number of lines", but
+	// will need to have the binary flag set for the report
+	if isBinary {
+		mutex.Lock()
+		if !entry.IsBinary {
+			entry.IsBinary = true
 		}
+		mutex.Unlock()
+		return nil
+	}
 
-		var isBinary = utils.IsBinaryFormat(contents)
+	var newline = utils.DetermineNewline(contents)
+	var numberOfLines = int32(len(bytes.Split(contents, []byte(newline))))
 
-		// Binary files will not have "number of lines", but
-		// will need to have the binary flag set for the report
-		if isBinary {
-			mutex.Lock()
-			if !entry.IsBinary {
-				entry.IsBinary = true
-			}
-			mutex.Unlock()
-			return nil
-		}
+	atomic.AddInt32(&(entry.NumberOfLines), numberOfLines)
+	atomic.AddInt32(&res.TotalNumberOfLines, numberOfLines)
 
-		var newline = utils.DetermineNewline(contents)
-		var numberOfLines = int32(len(bytes.Split(contents, []byte(newline))))
-
-		atomic.AddInt32(&(entry.NumberOfLines), numberOfLines)
-		atomic.AddInt32(&res.TotalNumberOfLines, numberOfLines)
-
-		if res.NumberOfBigFiles > 0 {
-			mutex.Lock()
-			res.BigFiles = append(res.BigFiles, result.FileSize{
-				Name:  truncBigFileName(startdir, filename),
-				Size:  size,
-				Lines: numberOfLines,
-			})
-			mutex.Unlock()
-		}
+	if res.NumberOfBigFiles > 0 {
+		mutex.Lock()
+		res.BigFiles = append(res.BigFiles, result.FileSize{
+			Name:  truncBigFileName(startdir, filename),
+			Size:  size,
+			Lines: numberOfLines,
+		})
+		mutex.Unlock()
 	}
 
 	return nil
@@ -143,15 +149,15 @@ func truncBigFileName(startdir, bigFileName string) string {
 
 	// possibly truncate name and add "..." in front
 	var bigFileNameLength = len(bigFileName)
-	if bigFileNameLength > print.BigFileLength {
-		bigFileName = bigFileName[(bigFileNameLength - print.BigFileLength):]
+	if bigFileNameLength > bigFileMaxLength {
+		bigFileName = bigFileName[(bigFileNameLength - bigFileMaxLength):]
 		bigFileName = "..." + bigFileName[3:]
 	}
 
 	return bigFileName
 }
 
-// All searches the given directory and returns the search result
+// The function All searches the given directory and returns the search result
 func All(dir string, cfg config.Config, bigFiles int) result.Result {
 	startdir = dir
 	res = result.InitResult(cfg.FileExtensions, cfg.Exclusions, bigFiles)

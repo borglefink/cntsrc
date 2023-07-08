@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"cntsrc/config"
 	"cntsrc/find"
@@ -17,7 +18,7 @@ import (
 )
 
 var (
-	suggestedConfigFilename = flag.String("c", "", "countsource configuration file")
+	suggestedConfigFilename = flag.String("c", "", "countsource configuration file (with or without path)")
 	showDebug               = flag.Bool("debug", false, "show full status of which files and directories in path are excluded or included.")
 	showBigFiles            = flag.Int("big", 0, "show the x largest files")
 	showHelp                = flag.Bool("h", false, "this help information")
@@ -42,7 +43,8 @@ func init() {
 // usage
 func usage() {
 	var executableName = filepath.Base(os.Args[0])
-	fmt.Printf("\nCNTSRC (C) Copyright 2017 Erlend Johannessen\n")
+	var year = time.Now().Year()
+	fmt.Printf("\nCNTSRC (C) Copyright 2017-%v Erlend Johannessen\n", year)
 	fmt.Printf("%s counts source-code lines for given directory and sub-directories.\n", executableName)
 	fmt.Printf("\nUsage: %s [options] [dirname]  \n", executableName)
 	fmt.Printf("  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")
