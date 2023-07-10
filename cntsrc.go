@@ -7,8 +7,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
-	"path/filepath"
+	"strings"
 	"time"
 
 	"cntsrc/config"
@@ -42,9 +41,9 @@ func init() {
 
 // usage
 func usage() {
-	var executableName = filepath.Base(os.Args[0])
+	var executableName = utils.GetExecutableName()
 	var year = time.Now().Year()
-	fmt.Printf("\nCNTSRC (C) Copyright 2017-%v Erlend Johannessen\n", year)
+	fmt.Printf("\n%s (C) Copyright 2017-%v Erlend Johannessen\n", strings.ToUpper(executableName), year)
 	fmt.Printf("%s counts source-code lines for given directory and sub-directories.\n", executableName)
 	fmt.Printf("\nUsage: %s [options] [dirname]  \n", executableName)
 	fmt.Printf("  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")

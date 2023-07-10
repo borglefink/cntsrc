@@ -11,8 +11,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/kardianos/osext"
 )
 
 var (
@@ -70,18 +68,23 @@ func ResolveStartdir(pathFromFlag, defaultPath string) string {
 // IsBinaryFormat determines if the given data represents a binary file
 func IsBinaryFormat(data []byte) bool {
 	var mimetype = http.DetectContentType(data)
-	return strings.Index(mimetype, "text/plain") < 0 &&
-		strings.Index(mimetype, "text/html") < 0 &&
-		strings.Index(mimetype, "text/xml") < 0
+	return !strings.Contains(mimetype, "text/plain") &&
+		!strings.Contains(mimetype, "text/html") &&
+		!strings.Contains(mimetype, "text/xml")
 }
 
 // GetExecutableName returns the name of the executable
 func GetExecutableName() string {
-	filename, err := osext.Executable()
+	filename, err := os.Executable()
 
 	if err != nil {
 		filename, _ = filepath.Abs(os.Args[0])
 	}
 
-	return filename
+	// if Windows platform, remove .exe
+	if strings.Index(filename, ".exe") > 0 {
+		filename = strings.Replace(filename, ".exe", "", 1)
+	}
+
+	return filepath.Base(filename)
 }
