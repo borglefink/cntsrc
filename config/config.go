@@ -8,7 +8,6 @@ import (
 	"cntsrc/utils"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -20,8 +19,8 @@ const (
 
 // Config contains the programs config, read from file
 type Config struct {
-	FileExtensions []string
-	Exclusions     []string
+	FileExtensions []string `json:"FileExtensions"`
+	Exclusions     []string `json:"Exclusions"`
 }
 
 // cleanupExclusions
@@ -85,7 +84,7 @@ func LoadConfig(suggestedConfigFilename string) Config {
 	var configFilename = resolveConfigFileName(suggestedConfigFilename)
 
 	// Read whole the file. If not exist, create it.
-	var jsonstring, err = ioutil.ReadFile(configFilename)
+	var jsonstring, err = os.ReadFile(configFilename)
 	if err != nil {
 		return createConfig(defaultConfigFileName).cleanupExclusions()
 	}
