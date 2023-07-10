@@ -160,7 +160,7 @@ func truncBigFileName(startdir, bigFileName string) string {
 // The function All searches the given directory and returns the search result
 func All(dir string, cfg config.Config, bigFiles int) result.Result {
 	startdir = dir
-	res = result.InitResult(cfg.FileExtensions, cfg.Exclusions, bigFiles)
+	res = result.InitResult(cfg.Inclusions, cfg.Exclusions, bigFiles)
 
 	var err = walk.Walk(startdir, forEachFileSystemEntry)
 	if err != nil {

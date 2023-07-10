@@ -17,10 +17,10 @@ const (
 	defaultConfigFileName = "cntsrc.config"
 )
 
-// Config contains the programs config, read from file
+// Config contains the program's configuration, read from a JSON file
 type Config struct {
-	FileExtensions []string `json:"FileExtensions"`
-	Exclusions     []string `json:"Exclusions"`
+	Inclusions []string `json:"FileExtensions"`
+	Exclusions []string `json:"Exclusions"`
 }
 
 // cleanupExclusions
