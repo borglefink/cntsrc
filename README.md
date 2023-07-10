@@ -78,16 +78,6 @@ Clone the repository into your GOPATH somewhere and resolve dependencies (see be
 _cntsrc_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. 
 See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk). 
 
-Daniel Theophanes's package for finding the os executable, 
-[github.com/kardianos/osext](https://github.com/kardianos/osext), 
-is also used for compatibility with older versions of Go. 
-
-Resolve by doing:
-```
-go get github.com/MichaelTJones/walk
-go get github.com/kardianos/osext
-```
-
 ## Background
 
 I wanted to count the number of source code lines for source code in an ASP.NET MVC project, to keep track of the size of it. So I wrote _cntsrc_. This is a re-implemetation of the original utility, found at [github.com/borglefink/countsource](https://github.com/borglefink/countsource).
