@@ -15,6 +15,7 @@ import (
 
 const (
 	// formatString consists of "filetype", "#files", "#lines", "line%", "size", "size%"
+	// "filetype" is really file extension
 	formatString       = "%-15s %10s %12s %6s %13s %6s\n"
 	formatStringLength = 15 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13 + 1 + 6
 )
