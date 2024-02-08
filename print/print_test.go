@@ -6,7 +6,7 @@ package print
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"os"
 	"reflect"
 	"sync"
@@ -32,23 +32,23 @@ func TestPrintHeader(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
+	var actualResult, _ = io.ReadAll(r)
 	var expectedResult = []byte(`
 Directory processed:
 /home/user/code/project
----------------------------------------------------------------
-filetype        #files       #lines  line%          size  size%
----------------------------------------------------------------
+-------------------------------------------------------------------
+filetype            #files       #lines  line%          size  size%
+-------------------------------------------------------------------
 `)
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
 
 // printEntry tests
 func TestPrintEntrySource(t *testing.T) {
-	var extensionEntry = {
+	var extensionEntry = &result.ExtensionEntry{
 		ExtensionName: ".go",
 		Filesize:      1000,
 		NumberOfFiles: 1,
@@ -65,16 +65,16 @@ func TestPrintEntrySource(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
-	var expectedResult = []byte(".go                  1        1 000 5000.0         1 000  100.0\n")
+	var actualResult, _ = io.ReadAll(r)
+	var expectedResult = []byte(".go                      1        1 000 5000.0         1 000  100.0\n")
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
 
 func TestPrintEntryBinary(t *testing.T) {
-	var extensionEntry = {
+	var extensionEntry = &result.ExtensionEntry{
 		ExtensionName: ".png",
 		IsBinary:      true,
 		Filesize:      1000,
@@ -91,10 +91,10 @@ func TestPrintEntryBinary(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
-	var expectedResult = []byte(".png                 1                             1 000  100.0\n")
+	var actualResult, _ = io.ReadAll(r)
+	var expectedResult = []byte(".png                     1                             1 000  100.0\n")
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
@@ -121,7 +121,7 @@ func TestPrintBigFiles(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
+	var actualResult, _ = io.ReadAll(r)
 	var expectedResult = []byte(`
 
 The 3 largest files are:                                 #lines
@@ -132,7 +132,7 @@ File3                                                        20
 File1                                                        10
 `)
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
@@ -155,13 +155,13 @@ func TestPrintFooter(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
+	var actualResult, _ = io.ReadAll(r)
 	var expectedResult = []byte(
-		`---------------------------------------------------------------
-Total:               1            1  100.0             1  100.0
+		`-------------------------------------------------------------------
+Total:                   1            1  100.0             1  100.0
 `)
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
@@ -179,16 +179,16 @@ func TestPrintFooterNoFiles(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
+	var actualResult, _ = io.ReadAll(r)
 	var expectedResult = []byte(
 		`No files found.
 
 Check given directory,or maybe 
 check extensions in config file.
----------------------------------------------------------------
+-------------------------------------------------------------------
 `)
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
@@ -255,7 +255,7 @@ func TestResult(t *testing.T) {
 	os.Stdout = oldStdout
 	mutex.Unlock()
 
-	var actualResult, _ = ioutil.ReadAll(r)
+	var actualResult, _ = io.ReadAll(r)
 	var expectedResult = []byte(`
 Directory processed:
 /home/user/code/project
@@ -279,7 +279,7 @@ File3                                                        20
 File1                                                        10
 `)
 
-	if bytes.Compare(actualResult, expectedResult) != 0 {
+	if !bytes.Equal(actualResult, expectedResult) {
 		t.Fatalf("Expected |%s| but got |%s|", expectedResult, actualResult)
 	}
 }
